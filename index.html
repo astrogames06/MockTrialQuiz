@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Full Memory Quiz</title>
+<style>
+body { font-family: Arial; background:#f4f4f4; padding:20px; }
+.quiz { max-width:800px; margin:auto; background:white; padding:20px; border-radius:10px; }
+.question { margin:15px 0; font-weight:bold; }
+.answers label { display:block; margin:4px 0; }
+.correct { color:green; }
+.wrong { color:red; }
+button { padding:10px 20px; margin-top:10px; cursor:pointer; }
+</style>
+</head>
+<body>
+
+<div class="quiz">
+<h2>Full Story Quiz</h2>
+<form id="quizForm"></form>
+<button onclick="submitQuiz()">Submit</button>
+<div id="results"></div>
+</div>
+
+<script>
+const quizData = [
+{
+q:"What is the plaintiff's date of birth?",
+a:["1 Jan 1978","1 Feb 1978","2 Feb 1978","1 Mar 1978"],
+c:1
+},
+{
+q:"What is the plaintiff's job?",
+a:["Teacher","Businessman","Lawyer","Doctor"],
+c:1
+},
+{
+q:"How many gyms does he own?",
+a:["10","20","~30","50"],
+c:2
+},
+{
+q:"Why did he leave school?",
+a:["Didn’t like it","No money","Family issue","Expelled"],
+c:1
+},
+{
+q:"What age did he leave school?",
+a:["16","17","18","19"],
+c:2
+},
+{
+q:"What type of work did he do?",
+a:["Office job","Hard labour","Retail","Teaching"],
+c:1
+},
+{
+q:"Age when he bought first gym?",
+a:["21","22","23","25"],
+c:2
+},
+{
+q:"Who did he marry?",
+a:["Ellie","Annabelle Lever","Sarah","Emma"],
+c:1
+},
+{
+q:"What year did he marry?",
+a:["2004","2005","2006","2007"],
+c:2
+},
+{
+q:"Why did they not have kids?",
+a:["Couldn’t","Didn’t want","Career focused","Medical"],
+c:2
+},
+{
+q:"Who is his brother?",
+a:["Fred","George Fox","James","Tom"],
+c:1
+},
+{
+q:"Who is his niece?",
+a:["Ellie Fox","Anna","Lucy","Kate"],
+c:0
+},
+{
+q:"Who is his nephew?",
+a:["Fred Fox","Tom","Jack","Ben"],
+c:0
+},
+{
+q:"Ellie DOB?",
+a:["3 Mar 2003","4 Sept 2001","1 Jan 2000","5 May 2002"],
+c:1
+},
+{
+q:"Fred DOB?",
+a:["3 Mar 2003","4 Sept 2001","2005","2000"],
+c:0
+},
+{
+q:"Where did Ellie spend time as a child?",
+a:["Home","Gym","School","Park"],
+c:1
+},
+{
+q:"How did he view Ellie?",
+a:["Friend","Daughter","Student","Worker"],
+c:1
+},
+{
+q:"What did Ellie get into?",
+a:["Job","TAFE","University","Business"],
+c:2
+},
+{
+q:"What stopped Ellie studying more?",
+a:["Health","Cost of living","Grades","Family"],
+c:1
+},
+{
+q:"Where was cost high?",
+a:["Melbourne","Sydney","Brisbane","Perth"],
+c:1
+},
+{
+q:"What did Fred say Ellie wanted?",
+a:["Car","Travel","House","Job"],
+c:2
+},
+{
+q:"Where did they discuss loan?",
+a:["Home","Gym","21st birthday","Office"],
+c:2
+},
+{
+q:"Whose birthday?",
+a:["Ellie","Fred","George","Annabelle"],
+c:1
+},
+{
+q:"Loan amount?",
+a:["100k","200k","500k","1M"],
+c:2
+},
+{
+q:"Purpose of loan?",
+a:["Travel","Study + house deposit","Car","Business"],
+c:1
+},
+{
+q:"Transfer date?",
+a:["3 Mar 2024","10 Mar 2024","1 Feb 2024","April 2024"],
+c:1
+},
+{
+q:"How did Ellie act later?",
+a:["Nice","Rude","Same","Helpful"],
+c:1
+},
+{
+q:"What did plaintiff think?",
+a:["Happy","Ungrateful","Confused","Proud"],
+c:1
+},
+{
+q:"What happened after argument?",
+a:["Closer","Stopped talking","Ignored","Moved"],
+c:1
+},
+{
+q:"What did he later request?",
+a:["More money","Repayment","Apology","Meeting"],
+c:1
+},
+{
+q:"Why did he need money?",
+a:["Holiday","Bills","House","Car"],
+c:1
+},
+{
+q:"Did Ellie respond?",
+a:["Yes","No","Later","Partially"],
+c:1
+}
+];
+
+const form = document.getElementById("quizForm");
+
+quizData.forEach((item, index) => {
+    const div = document.createElement("div");
+    div.innerHTML = `<div class="question">${index+1}. ${item.q}</div>`;
+   
+    item.a.forEach((ans, i) => {
+        div.innerHTML += `
+        <label>
+        <input type="radio" name="q${index}" value="${i}">
+        ${ans}
+        </label>`;
+    });
+
+    form.appendChild(div);
+});
+
+function submitQuiz() {
+    let score = 0;
+    let output = "";
+
+    quizData.forEach((item, index) => {
+        const answers = document.getElementsByName("q"+index);
+        let selected = -1;
+
+        answers.forEach(a => {
+            if (a.checked) selected = parseInt(a.value);
+        });
+
+        if (selected === item.c) {
+            score++;
+            output += `<p class="correct">Q${index+1}: Correct</p>`;
+        } else {
+            output += `<p class="wrong">Q${index+1}: Wrong (Correct: ${item.a[item.c]})</p>`;
+        }
+    });
+
+    output = `<h3>Score: ${score}/${quizData.length}</h3>` + output;
+    document.getElementById("results").innerHTML = output;
+}
+</script>
+
+</body>
+</html>
